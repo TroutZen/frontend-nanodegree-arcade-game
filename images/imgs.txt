@@ -1,5 +1,0 @@
-char-boy.png
-char-cat-girl.png
-char-horn-girl.png
-char-pink-girl.png
-char-princess-girl.png

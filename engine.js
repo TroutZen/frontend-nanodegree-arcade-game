@@ -1,12 +1,10 @@
 /* 
-Notes:
+Notes for polishing the code:
 - some sloppy reuse of code, especially in images, should load master list and make copies/slice as needed
 - some of the functions can be refactored, including isContained in, perhaps can be moved to collision
-
-
 */
 
-// [question:] why do we run the IIFE in a variable?
+// [meta:] why do we run the IIFE in a variable?
 var Engine = (function(global) {
 	
 
@@ -139,7 +137,7 @@ var Engine = (function(global) {
 		}
 
 
-
+		// infers which player character is chosen based on x,y coordinates
 		function validateChoice(e) {
 			// [refactor:] DRY, these are repeated in other function
 			var unitWidth = 32,
@@ -257,11 +255,11 @@ var Engine = (function(global) {
 	    				if ( isContainedIn(enemy) ) {
 	    					player.numLives--;    				
 	    					if (player.numLives < 1) {
+	    						// window and cache reload when numLives === 0
 	    						window.location.reload(true);
-	    						// reset();
 
 	    					} else {
-		    					//just reset position of player
+
 								updateAfterDeath();
 
 	    					}
@@ -278,7 +276,7 @@ var Engine = (function(global) {
 		    		if (player.numLives < 1) {
     					reset();
 					} else {
-    					//just reset position of player
+
 						updateAfterDeath();
 					}
 		    	} 
@@ -292,7 +290,6 @@ var Engine = (function(global) {
 	    function updateEntities(dt) {
 	    	// dynamic attributes need to be updated after each loop (position, time etc.)
 
-	    	// not working the way I want too...
 	    	allRocks.forEach(function(rock) {
 	    		rock.update(dt);
 
@@ -321,16 +318,13 @@ var Engine = (function(global) {
 	    }
 
 
-
+	    // render canvas objects every loop
 	    function render() {
 
 	        ctx.clearRect(0,0, canvas.width, canvas.height);
 	        
-	        // number of lives player has left - displayed in the lower panel
 	        renderNumLives();
 	        renderScore();
-
-
 			renderRocks();
 	        key.render();
 	        pointsBubble.render();
@@ -344,21 +338,22 @@ var Engine = (function(global) {
 	    	var ctx = canvas.getContext('2d');
 
 	    	var rowImages = [
-	            "images/test_images/grass-block-top.png",
-	            "images/test_images/grass-block.png",
-	            "images/test_images/water-block.png",
-	            "images/test_images/road-block-2.png",
-	            "images/test_images/stone-block-middle.png",
-	            "images/test_images/stone-block.png",
-	            "images/test_images/water-block.png",
-	            "images/test_images/water-block-full.png",
-	            "images/test_images/grass-block-full.png"
+	            "images/grass-block-top.png",
+	            "images/grass-block.png",
+	            "images/water-block.png",
+	            "images/road-block-2.png",
+	            "images/stone-block-middle.png",
+	            "images/stone-block.png",
+	            "images/water-block.png",
+	            "images/water-block-full.png",
+	            "images/grass-block-full.png"
 	        ],
 	        numRows = 16,
 	        numCols = 14,
 	        row, col;
 	        
 
+	        // renders the level background
 	        function renderBackground(imgObj, startRow, numRows) {
 	            for (row = startRow; row < startRow + numRows; row++) {
 	                for (col = 0; col < numCols; col++) {
@@ -379,6 +374,7 @@ var Engine = (function(global) {
 	    }
 
 
+	    // renders the moving rocks.
 	    function renderRocks() {
 
 	    	allRocks.forEach(function(rock) {
@@ -402,6 +398,7 @@ var Engine = (function(global) {
 	        
 	    }
 
+	    // renders the # of lives the player has remaining
 	    function renderNumLives () {
 	    	var numLives = +player.numLives;
 
@@ -410,6 +407,7 @@ var Engine = (function(global) {
 	    	ctx.fillText(numLives, 100 + 70, 493);
 	    }
 
+	    // renders the players score
 	    function renderScore () {
 	    	var score = +player.score;
 
@@ -423,7 +421,6 @@ var Engine = (function(global) {
 	    // "intended to prevent code from crashing by providing a default function in place of undefined"
 	    function reset() {
 	        gameReady = false;
-	        console.log("the whole game should reset");	
 	        
 	        // clearing the appropriate canvases is not working as intended. 
 	        ctxBackground.clearRect(0, 0, canvasBackground.width, canvasBackground.height);
@@ -431,9 +428,6 @@ var Engine = (function(global) {
 
 	        renderCharSelectScreen();
 	        wireEventHandlers();
-
-	        // reset all objects and go back to char select screen
-	        // player.reset();
 	    }
 
 	    function updateAfterDeath() {
@@ -442,6 +436,7 @@ var Engine = (function(global) {
 
 
 	    //[question: meta] is there an advantage/disadv to nesting functions in other functions i.e. this is only called within one function, checkCollision, could it go there?
+	    // checks whether there is an enemy collision event
 	    function isContainedIn(enemy) {
 	    	var collisionTolerance = 8;
 	    		enemy_lowerX = enemy.x + collisionTolerance,
@@ -471,6 +466,8 @@ var Engine = (function(global) {
 	    } 
 
 
+	    // checks whether the player is safely on top of the rock. Checks if the characters centerpoint is within
+	    // the bounds of rock image. Provides less tolerance than I would like. 
 	  	function isOnTopOf(rock) {
 	  		var p = player,
 	  			r = rock;
@@ -488,15 +485,15 @@ var Engine = (function(global) {
 
 		Resources.load(imgs);
 		Resources.load([
-	            "images/test_images/grass-block-top.png",
-	            "images/test_images/grass-block.png",
-	            "images/test_images/water-block.png",
-	            "images/test_images/road-block-2.png",
-	            "images/test_images/stone-block-middle.png",
-	            "images/test_images/stone-block.png",
-	            "images/test_images/water-block.png",
-	            "images/test_images/water-block-full.png",
-	            "images/test_images/grass-block-full.png",
+	            "images/grass-block-top.png",
+	            "images/grass-block.png",
+	            "images/water-block.png",
+	            "images/road-block-2.png",
+	            "images/stone-block-middle.png",
+	            "images/stone-block.png",
+	            "images/water-block.png",
+	            "images/water-block-full.png",
+	            "images/grass-block-full.png",
 	            'images/enemy-bug-left-Length3.png',
 	            'images/enemy-bug-right-Length1.png',
 	            'images/enemy-bug-left-Length1.png',
@@ -515,11 +512,13 @@ var Engine = (function(global) {
 	            'images/100Points.png'
 	        ]);
 
+		// functions to be called when images are loaded and ready
 		Resources.onReady(renderCharSelectScreen);
 		Resources.onReady(wireEventHandlers);
 		Resources.onReady(instantiateEnemies);
 		Resources.onReady(instantiateRocks);		
 
+		// make canvas and context available in window
 		global.canvas = canvas;
 		global.ctx = ctx;
 	});
