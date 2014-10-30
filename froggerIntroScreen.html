@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css">
+
+	<!-- library fallbacks -->
+   	<script type="text/javascript">
+		if ( !window.jQuery ) document.write('<script src="libs/jquery.js"><\/script>');
+	</script>
+
+	<script type="text/javascript"> 
+		window._ || document.write('<script src="libs/underscore.js"><\/script>');
+	</script>
+
+	<script type="text/javascript">
+		if ( !window.Backbone ) document.write('<script src="libs/backbone.js"><\/script>'); 
+	</script>
+	
+</head>
+<body>
+	<div id="container">
+		<canvas class="canvas" id="canvas-background" height="512px" width="448px"></canvas>
+		<canvas class="canvas" id="canvas-game" height="512px" width="448px"></canvas>
+		<h1 id="lives">Lives:</h1>
+		<h1 id="score">Score:</h1>
+	</div>	
+
+
+  
+
+
+	<script src="resources.js"></script>
+	<script src="engine.js"></script>
+	<script src="app.js"></script>
+	
+
+
+
+</body>
+</html>

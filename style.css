@@ -1,0 +1,54 @@
+
+#container {
+	position: relative;
+	margin: 0 auto;
+	width: 448px;
+    background-color: #eee;
+/*    border: 1px solid red;*/
+}
+
+h1 {
+    font-family: Arial;
+    font-size: 20px;
+    color: rgb(34, 156, 34);
+/*    border: 1px solid red;*/
+    margin: 0 0;
+
+}
+
+#lives {
+	position: absolute;
+    top: 480px;
+    left: 100px;
+}
+
+#score {
+	position: absolute;
+	top: 480px;
+	right: 100px;
+}
+
+
+canvas {
+	border: 5px solid black;
+}
+
+#canvas-background {
+	background: black;
+/*	border: 1px solid blue;*/
+}
+
+#canvas-game {
+
+	position: absolute;
+	background: transparent;
+	left: 0px;
+	top: 0px;
+	z-index: 2;
+	/*border: 1px solid green;*/
+
+	/*background-color: #000;*/
+	/*border-left: 20px solid #000;*/
+	/*border-right: 20px solid #000;*/
+}
+
